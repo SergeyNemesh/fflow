@@ -9,6 +9,8 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   final unfocusNode = FocusNode();
   // Stores action output result for [Backend Call - API (GetAllCharacter)] action in HomePage widget.
   ApiCallResponse? apiResultNames;
+  // Stores action output result for [Backend Call - API (GetAllCharacter)] action in Button widget.
+  ApiCallResponse? apiResult1nj;
 
   /// Initialization and disposal methods.
 

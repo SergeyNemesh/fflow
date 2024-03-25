@@ -20,7 +20,7 @@ class FFAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<String> _characterNames = [];
+  List<String> _characterNames = ['Hi'];
   List<String> get characterNames => _characterNames;
   set characterNames(List<String> value) {
     _characterNames = value;

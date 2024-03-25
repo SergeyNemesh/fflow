@@ -30,8 +30,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       _model.apiResultNames = await GetAllCharacterCall.call();
       if ((_model.apiResultNames?.succeeded ?? true)) {
         setState(() {
-          FFAppState().characterNames =
-              (_model.apiResultNames?.jsonBody ?? '').toList().cast<String>();
+          FFAppState().addToCharacterNames(
+              (_model.apiResultNames?.jsonBody ?? '').toString());
         });
       }
     });
@@ -64,30 +64,123 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         ),
         body: SafeArea(
           top: true,
-          child: Align(
-            alignment: const AlignmentDirectional(0.0, 0.0),
-            child: FFButtonWidget(
-              onPressed: () async {
-                context.pushNamed('Second');
-              },
-              text: 'Go next',
-              options: FFButtonOptions(
-                height: 40.0,
-                padding: const EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
-                iconPadding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                color: FlutterFlowTheme.of(context).primary,
-                textStyle: FlutterFlowTheme.of(context).titleSmall.override(
-                      fontFamily: 'Readex Pro',
-                      color: Colors.white,
-                    ),
-                elevation: 3.0,
-                borderSide: const BorderSide(
-                  color: Colors.transparent,
-                  width: 1.0,
-                ),
-                borderRadius: BorderRadius.circular(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              FutureBuilder<ApiCallResponse>(
+                future: GetAllCharacterCall.call(),
+                builder: (context, snapshot) {
+                  // Customize what your widget looks like when it's loading.
+                  if (!snapshot.hasData) {
+                    return Center(
+                      child: SizedBox(
+                        width: 50.0,
+                        height: 50.0,
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            FlutterFlowTheme.of(context).primary,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                  final listViewGetAllCharacterResponse = snapshot.data!;
+                  return Builder(
+                    builder: (context) {
+                      final namesT = GetAllCharacterCall.name(
+                            listViewGetAllCharacterResponse.jsonBody,
+                          )?.toList() ??
+                          [];
+                      return ListView.builder(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemCount: namesT.length,
+                        itemBuilder: (context, namesTIndex) {
+                          final namesTItem = namesT[namesTIndex];
+                          return Text(
+                            namesTItem,
+                            style: FlutterFlowTheme.of(context).bodyMedium,
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
               ),
-            ),
+              Align(
+                alignment: const AlignmentDirectional(0.0, 0.0),
+                child: FFButtonWidget(
+                  onPressed: () async {
+                    context.pushNamed('Second');
+                  },
+                  text: 'Go next',
+                  options: FFButtonOptions(
+                    height: 40.0,
+                    padding:
+                        const EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
+                    iconPadding:
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                    color: FlutterFlowTheme.of(context).primary,
+                    textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                          fontFamily: 'Readex Pro',
+                          color: Colors.white,
+                        ),
+                    elevation: 3.0,
+                    borderSide: const BorderSide(
+                      color: Colors.transparent,
+                      width: 1.0,
+                    ),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: const AlignmentDirectional(0.0, -1.0),
+                child: Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
+                  child: FFButtonWidget(
+                    onPressed: () async {
+                      _model.apiResult1nj = await GetAllCharacterCall.call();
+                      if ((_model.apiResult1nj?.succeeded ?? true)) {
+                        setState(() {
+                          FFAppState().addToCharacterNames(
+                              GetAllCharacterCall.name(
+                            (_model.apiResult1nj?.jsonBody ?? ''),
+                          )!
+                                  .contains(
+                                      (_model.apiResult1nj?.jsonBody ?? '')
+                                          .toString())
+                                  .toString());
+                        });
+                      }
+
+                      setState(() {});
+                    },
+                    text: 'triggerApi Cal',
+                    options: FFButtonOptions(
+                      height: 40.0,
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
+                      iconPadding:
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                      color: FlutterFlowTheme.of(context).error,
+                      textStyle:
+                          FlutterFlowTheme.of(context).titleSmall.override(
+                                fontFamily: 'Readex Pro',
+                                color: Colors.white,
+                              ),
+                      elevation: 3.0,
+                      borderSide: const BorderSide(
+                        color: Colors.transparent,
+                        width: 1.0,
+                      ),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
