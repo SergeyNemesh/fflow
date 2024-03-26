@@ -23,15 +23,11 @@ class GetAllCharacterCall {
     );
   }
 
-  static List<String>? name(dynamic response) => (getJsonField(
+  static List? results(dynamic response) => getJsonField(
         response,
-        r'''$.results[:].name''',
+        r'''$.results''',
         true,
-      ) as List?)
-          ?.withoutNulls
-          .map((x) => castToType<String>(x))
-          .withoutNulls
-          .toList();
+      ) as List?;
 }
 
 class ApiPagingParams {

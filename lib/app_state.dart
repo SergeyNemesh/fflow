@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '/backend/schema/structs/index.dart';
+import 'flutter_flow/flutter_flow_util.dart';
 
 class FFAppState extends ChangeNotifier {
   static FFAppState _instance = FFAppState._internal();
@@ -20,32 +22,36 @@ class FFAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<String> _characterNames = ['Hi'];
-  List<String> get characterNames => _characterNames;
-  set characterNames(List<String> value) {
-    _characterNames = value;
+  List<CharacterModelStruct> _charactersInState = [
+    CharacterModelStruct.fromSerializableMap(jsonDecode(
+        '{\"id\":\"idTest\",\"name\":\"nameTest\",\"image\":\"imageTest\"}'))
+  ];
+  List<CharacterModelStruct> get charactersInState => _charactersInState;
+  set charactersInState(List<CharacterModelStruct> value) {
+    _charactersInState = value;
   }
 
-  void addToCharacterNames(String value) {
-    _characterNames.add(value);
+  void addToCharactersInState(CharacterModelStruct value) {
+    _charactersInState.add(value);
   }
 
-  void removeFromCharacterNames(String value) {
-    _characterNames.remove(value);
+  void removeFromCharactersInState(CharacterModelStruct value) {
+    _charactersInState.remove(value);
   }
 
-  void removeAtIndexFromCharacterNames(int index) {
-    _characterNames.removeAt(index);
+  void removeAtIndexFromCharactersInState(int index) {
+    _charactersInState.removeAt(index);
   }
 
-  void updateCharacterNamesAtIndex(
+  void updateCharactersInStateAtIndex(
     int index,
-    String Function(String) updateFn,
+    CharacterModelStruct Function(CharacterModelStruct) updateFn,
   ) {
-    _characterNames[index] = updateFn(_characterNames[index]);
+    _charactersInState[index] = updateFn(_charactersInState[index]);
   }
 
-  void insertAtIndexInCharacterNames(int index, String value) {
-    _characterNames.insert(index, value);
+  void insertAtIndexInCharactersInState(
+      int index, CharacterModelStruct value) {
+    _charactersInState.insert(index, value);
   }
 }

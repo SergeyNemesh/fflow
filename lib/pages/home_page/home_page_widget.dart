@@ -1,9 +1,9 @@
 import '/backend/api_requests/api_calls.dart';
+import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'home_page_model.dart';
 export 'home_page_model.dart';
@@ -24,17 +24,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => HomePageModel());
-
-    // On page load action.
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      _model.apiResultNames = await GetAllCharacterCall.call();
-      if ((_model.apiResultNames?.succeeded ?? true)) {
-        setState(() {
-          FFAppState().addToCharacterNames(
-              (_model.apiResultNames?.jsonBody ?? '').toString());
-        });
-      }
-    });
   }
 
   @override
@@ -67,42 +56,21 @@ class _HomePageWidgetState extends State<HomePageWidget> {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              FutureBuilder<ApiCallResponse>(
-                future: GetAllCharacterCall.call(),
-                builder: (context, snapshot) {
-                  // Customize what your widget looks like when it's loading.
-                  if (!snapshot.hasData) {
-                    return Center(
-                      child: SizedBox(
-                        width: 50.0,
-                        height: 50.0,
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            FlutterFlowTheme.of(context).primary,
-                          ),
-                        ),
-                      ),
-                    );
-                  }
-                  final listViewGetAllCharacterResponse = snapshot.data!;
-                  return Builder(
-                    builder: (context) {
-                      final namesT = GetAllCharacterCall.name(
-                            listViewGetAllCharacterResponse.jsonBody,
-                          )?.toList() ??
-                          [];
-                      return ListView.builder(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemCount: namesT.length,
-                        itemBuilder: (context, namesTIndex) {
-                          final namesTItem = namesT[namesTIndex];
-                          return Text(
-                            namesTItem,
-                            style: FlutterFlowTheme.of(context).bodyMedium,
-                          );
-                        },
+              Builder(
+                builder: (context) {
+                  final charactesInList =
+                      FFAppState().charactersInState.toList();
+                  return ListView.builder(
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    itemCount: charactesInList.length,
+                    itemBuilder: (context, charactesInListIndex) {
+                      final charactesInListItem =
+                          charactesInList[charactesInListIndex];
+                      return Text(
+                        charactesInListItem.name,
+                        style: FlutterFlowTheme.of(context).bodyMedium,
                       );
                     },
                   );
@@ -141,17 +109,19 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   padding: const EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
                   child: FFButtonWidget(
                     onPressed: () async {
-                      _model.apiResult1nj = await GetAllCharacterCall.call();
-                      if ((_model.apiResult1nj?.succeeded ?? true)) {
-                        setState(() {
-                          FFAppState().addToCharacterNames(
-                              GetAllCharacterCall.name(
-                            (_model.apiResult1nj?.jsonBody ?? ''),
-                          )!
-                                  .contains(
-                                      (_model.apiResult1nj?.jsonBody ?? '')
-                                          .toString())
-                                  .toString());
+                      _model.apiResult = await GetAllCharacterCall.call();
+                      if ((_model.apiResult?.succeeded ?? true)) {
+                        FFAppState().update(() {
+                          FFAppState().charactersInState =
+                              ((_model.apiResult?.jsonBody ?? '')
+                                          .toList()
+                                          .map<CharacterModelStruct?>(
+                                              CharacterModelStruct.maybeFromMap)
+                                          .toList()
+                                      as Iterable<CharacterModelStruct?>)
+                                  .withoutNulls
+                                  .toList()
+                                  .cast<CharacterModelStruct>();
                         });
                       }
 
