@@ -22,12 +22,30 @@ class GetAllCharacterCall {
       alwaysAllowBody: false,
     );
   }
+}
 
-  static List? results(dynamic response) => getJsonField(
+class GetSingleCharacterCall {
+  static Future<ApiCallResponse> call({
+    int? characterId = 2,
+  }) async {
+    return ApiManager.instance.makeApiCall(
+      callName: 'GetSingleCharacter',
+      apiUrl: 'https://rickandmortyapi.com/api/character/$characterId',
+      callType: ApiCallType.GET,
+      headers: {},
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  static String? status(dynamic response) => castToType<String>(getJsonField(
         response,
-        r'''$.results''',
-        true,
-      ) as List?;
+        r'''$.status''',
+      ));
 }
 
 class ApiPagingParams {

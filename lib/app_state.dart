@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '/backend/schema/structs/index.dart';
-import 'flutter_flow/flutter_flow_util.dart';
 
 class FFAppState extends ChangeNotifier {
   static FFAppState _instance = FFAppState._internal();
@@ -22,36 +21,32 @@ class FFAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<CharacterModelStruct> _charactersInState = [
-    CharacterModelStruct.fromSerializableMap(jsonDecode(
-        '{\"id\":\"idTest\",\"name\":\"nameTest\",\"image\":\"imageTest\"}'))
-  ];
-  List<CharacterModelStruct> get charactersInState => _charactersInState;
-  set charactersInState(List<CharacterModelStruct> value) {
-    _charactersInState = value;
+  List<CharacterModelStruct> _data = [];
+  List<CharacterModelStruct> get data => _data;
+  set data(List<CharacterModelStruct> value) {
+    _data = value;
   }
 
-  void addToCharactersInState(CharacterModelStruct value) {
-    _charactersInState.add(value);
+  void addToData(CharacterModelStruct value) {
+    _data.add(value);
   }
 
-  void removeFromCharactersInState(CharacterModelStruct value) {
-    _charactersInState.remove(value);
+  void removeFromData(CharacterModelStruct value) {
+    _data.remove(value);
   }
 
-  void removeAtIndexFromCharactersInState(int index) {
-    _charactersInState.removeAt(index);
+  void removeAtIndexFromData(int index) {
+    _data.removeAt(index);
   }
 
-  void updateCharactersInStateAtIndex(
+  void updateDataAtIndex(
     int index,
     CharacterModelStruct Function(CharacterModelStruct) updateFn,
   ) {
-    _charactersInState[index] = updateFn(_charactersInState[index]);
+    _data[index] = updateFn(_data[index]);
   }
 
-  void insertAtIndexInCharactersInState(
-      int index, CharacterModelStruct value) {
-    _charactersInState.insert(index, value);
+  void insertAtIndexInData(int index, CharacterModelStruct value) {
+    _data.insert(index, value);
   }
 }

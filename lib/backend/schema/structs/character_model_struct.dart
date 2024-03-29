@@ -7,17 +7,22 @@ import '/flutter_flow/flutter_flow_util.dart';
 
 class CharacterModelStruct extends BaseStruct {
   CharacterModelStruct({
-    String? id,
+    int? id,
     String? name,
     String? image,
+    String? gender,
+    bool? isAdd,
   })  : _id = id,
         _name = name,
-        _image = image;
+        _image = image,
+        _gender = gender,
+        _isAdd = isAdd;
 
   // "id" field.
-  String? _id;
-  String get id => _id ?? '';
-  set id(String? val) => _id = val;
+  int? _id;
+  int get id => _id ?? 0;
+  set id(int? val) => _id = val;
+  void incrementId(int amount) => _id = id + amount;
   bool hasId() => _id != null;
 
   // "name" field.
@@ -32,11 +37,25 @@ class CharacterModelStruct extends BaseStruct {
   set image(String? val) => _image = val;
   bool hasImage() => _image != null;
 
+  // "gender" field.
+  String? _gender;
+  String get gender => _gender ?? '';
+  set gender(String? val) => _gender = val;
+  bool hasGender() => _gender != null;
+
+  // "isAdd" field.
+  bool? _isAdd;
+  bool get isAdd => _isAdd ?? false;
+  set isAdd(bool? val) => _isAdd = val;
+  bool hasIsAdd() => _isAdd != null;
+
   static CharacterModelStruct fromMap(Map<String, dynamic> data) =>
       CharacterModelStruct(
-        id: data['id'] as String?,
+        id: castToType<int>(data['id']),
         name: data['name'] as String?,
         image: data['image'] as String?,
+        gender: data['gender'] as String?,
+        isAdd: data['isAdd'] as bool?,
       );
 
   static CharacterModelStruct? maybeFromMap(dynamic data) => data is Map
@@ -47,13 +66,15 @@ class CharacterModelStruct extends BaseStruct {
         'id': _id,
         'name': _name,
         'image': _image,
+        'gender': _gender,
+        'isAdd': _isAdd,
       }.withoutNulls;
 
   @override
   Map<String, dynamic> toSerializableMap() => {
         'id': serializeParam(
           _id,
-          ParamType.String,
+          ParamType.int,
         ),
         'name': serializeParam(
           _name,
@@ -63,13 +84,21 @@ class CharacterModelStruct extends BaseStruct {
           _image,
           ParamType.String,
         ),
+        'gender': serializeParam(
+          _gender,
+          ParamType.String,
+        ),
+        'isAdd': serializeParam(
+          _isAdd,
+          ParamType.bool,
+        ),
       }.withoutNulls;
 
   static CharacterModelStruct fromSerializableMap(Map<String, dynamic> data) =>
       CharacterModelStruct(
         id: deserializeParam(
           data['id'],
-          ParamType.String,
+          ParamType.int,
           false,
         ),
         name: deserializeParam(
@@ -82,6 +111,16 @@ class CharacterModelStruct extends BaseStruct {
           ParamType.String,
           false,
         ),
+        gender: deserializeParam(
+          data['gender'],
+          ParamType.String,
+          false,
+        ),
+        isAdd: deserializeParam(
+          data['isAdd'],
+          ParamType.bool,
+          false,
+        ),
       );
 
   @override
@@ -92,20 +131,27 @@ class CharacterModelStruct extends BaseStruct {
     return other is CharacterModelStruct &&
         id == other.id &&
         name == other.name &&
-        image == other.image;
+        image == other.image &&
+        gender == other.gender &&
+        isAdd == other.isAdd;
   }
 
   @override
-  int get hashCode => const ListEquality().hash([id, name, image]);
+  int get hashCode =>
+      const ListEquality().hash([id, name, image, gender, isAdd]);
 }
 
 CharacterModelStruct createCharacterModelStruct({
-  String? id,
+  int? id,
   String? name,
   String? image,
+  String? gender,
+  bool? isAdd,
 }) =>
     CharacterModelStruct(
       id: id,
       name: name,
       image: image,
+      gender: gender,
+      isAdd: isAdd,
     );

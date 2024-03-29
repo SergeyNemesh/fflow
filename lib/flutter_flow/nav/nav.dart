@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/backend/schema/structs/index.dart';
 
 import '/index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -45,7 +46,24 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'Second',
           path: '/second',
-          builder: (context, params) => const SecondWidget(),
+          builder: (context, params) => SecondWidget(
+            characterName: params.getParam(
+              'characterName',
+              ParamType.String,
+            ),
+            characterImage: params.getParam(
+              'characterImage',
+              ParamType.String,
+            ),
+            characterId: params.getParam(
+              'characterId',
+              ParamType.int,
+            ),
+            index: params.getParam(
+              'index',
+              ParamType.int,
+            ),
+          ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
@@ -117,6 +135,7 @@ class FFParameters {
     String paramName,
     ParamType type, [
     bool isList = false,
+    StructBuilder<T>? structBuilder,
   ]) {
     if (futureParamValues.containsKey(paramName)) {
       return futureParamValues[paramName];
@@ -134,6 +153,7 @@ class FFParameters {
       param,
       type,
       isList,
+      structBuilder: structBuilder,
     );
   }
 }
